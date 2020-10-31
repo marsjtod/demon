@@ -230,8 +230,6 @@ RUN \
 #     make
 
 # # ** download weights
-# ENV PYTHONPATH="${PYTHONPATH}:$DEMON_DIR/lmbspecialops/python"
-# export PYTHONPATH="${PYTHONPATH}:/workspace/demon-sfm/lmbspecialops/python"
 # RUN cd $DEMON_DIR/weights && \
 #     ./download_weights.sh
 
@@ -253,5 +251,9 @@ RUN \
 # mars : module in/out sample
 # # opens a window with the depth map (and the point cloud if vtk is available)
 #     # python example.py
+
+ENV PYTHONPATH="${PYTHONPATH}:$DEMON_DIR/lmbspecialops/python"
+# mars !!! for python module lmbspecialops
+# # export PYTHONPATH="${PYTHONPATH}:/workspace/demon-sfm/lmbspecialops/python"
 
 EXPOSE 7222
