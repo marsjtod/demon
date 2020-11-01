@@ -77,19 +77,27 @@ docker-build:
 		-f docker/Dockerfile \
 		-t ${DOCKER_IMAGE} .
 
-docker-shell-cpu: docker-build
-	docker run --name ${PROJECT} ${DOCKER_OPTS} ${DOCKER_IMAGE} bash
+docker-build-cpu:
+	docker build \
+		-f docker/Dockerfile-cpu \
+		-t ${DOCKER_IMAGE}-cpu .
 
-docker-shell-cpu-2: docker-build
-	docker run --name ${PROJECT}-2  ${DOCKER_OPTS} ${DOCKER_IMAGE} bash
 
-docker-jupyter-cpu: docker-build
-	docker run --name ${PROJECT}  ${DOCKER_OPTS} ${DOCKER_IMAGE} \
+docker-shell-cpu: docker-build-cpu
+	docker run --name ${PROJECT}-cpu ${DOCKER_OPTS} ${DOCKER_IMAGE}-cpu bash
+
+docker-shell-cpu-2: docker-build-cpu
+	docker run --name ${PROJECT}-cpu-2  ${DOCKER_OPTS} ${DOCKER_IMAGE}-cpu bash
+
+docker-jupyter-cpu: docker-build-cpu
+	docker run --name ${PROJECT}-cpu  ${DOCKER_OPTS} ${DOCKER_IMAGE}-cpu \
 		bash -c "jupyter notebook --port=7222 --ip=0.0.0.0 --allow-root --no-browser"
 
-docker-run-cpu: docker-build
-	docker run --name ${PROJECT}  ${DOCKER_OPTS} ${DOCKER_IMAGE} \
+docker-run-cpu: docker-build-cpu
+	docker run --name ${PROJECT}-cpu  ${DOCKER_OPTS} ${DOCKER_IMAGE}-cpu \
 		bash -c "${COMMAND}"
+
+
 
 docker-shell: docker-build
 	docker run --name ${PROJECT} --gpus all  ${DOCKER_OPTS} ${DOCKER_IMAGE} bash
